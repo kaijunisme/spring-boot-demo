@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace 對應持久層的介面 -->
+<mapper namespace="com.example.demo.mapper.MemberMapper" >        <!-- id 對應持久層介面的方法，parameterType 為引數資料型別，resultType 為返回資料型別 -->
+    <insert id="insert" parameterType="com.example.demo.entity.Member">
+       INSERT INTO test_project.member (
+       		MA_ID, NAME, ID_NUMBER, BIRTHDAY, 
+       		PHONE, C_ID, D_ID, ADDRESS,
+       		CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME
+       )     
+        VALUES (
+        	#{ma_id}, #{name}, #{id_number}, #{birthday},
+        	#{phone}, #{c_id}, #{d_id}, #{address},
+        	#{create_by}, NOW(), #{update_by}, NOW()
+        )
+    </insert>
+
+    <select id="findMemberByMa_id" parameterType="string" resultType="com.example.demo.entity.Member">
+    	SELECT 
+       		MA_ID, NAME, ID_NUMBER, BIRTHDAY, 
+       		PHONE, C_ID, D_ID, ADDRESS
+	    FROM 
+       		test_project.member
+       	WHERE 
+       		MA_ID = #{ma_id}
+    </select>
+
+    <update id="update" parameterType="com.example.demo.entity.Member">
+		UPDATE 
+	    	test_project.member 
+		SET 
+			ID_NUMBER = #{id_number}, BIRTHDAY = #{birthday}, PHONE = #{phone}, 
+			C_ID = #{c_id}, D_ID = #{d_id}, ADDRESS = #{address}, 
+			UPDATE_BY = #{update_by}, UPDATE_TIME = NOW()
+		WHERE 
+			MA_ID = #{ma_id}
+    </update>
+</mapper> 

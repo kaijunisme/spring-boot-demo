@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace 對應持久層的介面 -->
+<mapper namespace="com.example.demo.mapper.MemberAccountMapper" >        <!-- id 對應持久層介面的方法，parameterType 為引數資料型別，resultType 為返回資料型別 -->
+    <insert id="insert" parameterType="com.example.demo.entity.MemberAccount">
+       INSERT INTO test_project.member_account (
+       		USERNAME, PASSWORD, SALT, 
+       		CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME
+       )     
+        VALUES (
+        	#{username}, #{password}, #{salt},
+        	#{create_by}, NOW(), #{update_by}, NOW()
+        )
+    </insert>
+
+    <select id="findMemberAccountByUsername" parameterType="string" resultType="com.example.demo.entity.MemberAccount">
+    	SELECT 
+	    	ID, USERNAME, PASSWORD, SALT
+	    FROM 
+       		test_project.member_account
+       	WHERE 
+       		USERNAME = #{username}
+    </select>
+
+    <update id="update" parameterType="com.example.demo.entity.MemberAccount">
+		UPDATE 
+	    	test_project.member_account 
+		SET 
+			PASSWORD = #{password}, UPDATE_BY = #{update_by}, UPDATE_TIME = NOW()
+		WHERE 
+			ID = #{id}
+    </update>
+</mapper> 

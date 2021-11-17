@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace 對應持久層的介面 -->
+<mapper namespace="com.example.demo.mapper.CountyMapper" >    
+    <select id="findAllCounty" resultType="com.example.demo.entity.County">
+    	SELECT 
+	    	ID, NAME
+	    FROM 
+       		test_project.county
+    </select>
+</mapper> 
