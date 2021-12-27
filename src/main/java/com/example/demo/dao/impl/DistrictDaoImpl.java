@@ -26,11 +26,7 @@ public class DistrictDaoImpl implements DistrictDao {
 				   + " WHERE "
 				   + "		C_ID = ? ";
 
-		List<District> result = jdbcTemplate.query(sql, new BeanPropertyRowMapper<District>(District.class), new Object[] { c_id });
-		if(result != null && result.size() > 0) {
-			return result;
-		}
-		return null;
+		return jdbcTemplate.query(sql, new BeanPropertyRowMapper<District>(District.class), new Object[] { c_id });
 	}
 
 }

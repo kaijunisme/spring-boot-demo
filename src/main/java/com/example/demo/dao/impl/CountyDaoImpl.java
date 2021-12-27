@@ -26,11 +26,7 @@ public class CountyDaoImpl implements CountyDao {
 				   + " ORDER BY "
 				   + "		ID ";
 
-		List<County> result = jdbcTemplate.query(sql, new BeanPropertyRowMapper<County>(County.class));
-		if(result != null && result.size() > 0) {
-			return result;
-		}
-		return null;
+		return jdbcTemplate.query(sql, new BeanPropertyRowMapper<County>(County.class));
 	}
 
 }

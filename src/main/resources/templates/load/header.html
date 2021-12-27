@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body th:fragment="header">
+    <header>
+        <section class="header">
+            <div class="logo">2021 鐵人賽參賽作品</div>
+            <nav>
+                <ul>
+                    <li><a th:href="@{/information}">會員資料</a></li>
+                    <li><a th:href="@{/modifyPassword}">修改密碼</a></li>
+                    <li><a th:href="@{/logout}">登出</a></li>
+                </ul>
+            </nav>
+        </section>
+    </header>
+</body>
+</html>

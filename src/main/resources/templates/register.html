@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>加入會員</title>
+    <head th:insert="load/css :: css"></head>
+    <head th:insert="load/js :: js"></head>
+    <link rel="stylesheet" th:href="@{/css/register.css}">
+</head>
+<body>
+    <main>
+        <h1>加入會員</h1>
+        <form id="registerForm" method="POST" th:action="@{/register}" th:Object="${memberAccountVO}" enctype="multipart/form-data" autocomplete="off">
+            <section class="form-input">
+                <label>姓名</label>
+                <div class="input-area">
+                    <div class="input-img"><img th:src="@{/images/face.png}"></div>
+                    <input type="text" th:field="*{name}" placeholder="請輸入您的姓名"/>
+                </div>
+            </section>
+            <section class="form-input">
+                <label>帳號/Email</label>
+                <div class="input-area">
+                    <div class="input-img"><img th:src="@{/images/person.png}"></div>
+                    <input type="text" th:field="*{username}" placeholder="請輸入您的Email"/>
+                </div>
+            </section>
+            <section class="form-input">
+                <label>密碼</label>
+                <div class="input-area">
+                    <div class="input-img"><img th:src="@{/images/lock.png}"></div>
+                    <input type="password" th:field="*{password}" maxlength="16" placeholder="請輸入您的密碼"/>
+                </div>
+            </section>
+            <section class="form-input">
+                <label>再次輸入密碼</label>
+                <div class="input-area">
+                    <div class="input-img"><img th:src="@{/images/lock.png}"></div>
+                    <input type="password" th:field="*{checkPassword}" maxlength="16" placeholder="請再次輸入您的密碼"/>
+                </div>
+            </section>
+            <button>註冊</button>
+            <span>已經是會員了嗎?<a th:href="@{/login}">立即登入</a></span>
+        </form>
+    </main>
+    
+    <script th:src="@{/js/register.js}"></script>
+</body>
+</html>

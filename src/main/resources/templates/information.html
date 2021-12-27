@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>會員資料</title>
+    <head th:insert="load/css :: css"></head>
+    <head th:insert="load/js :: js"></head>
+    <link rel="stylesheet" th:href="@{/css/information.css}">
+</head>
+<body>
+    <section th:replace="load/header :: header"></section>
+
+    <section class="main-content">
+        <div class="content">
+            <main>
+                <h1>會員資料</h1>
+        		<form id="informationForm" method="POST" th:action="@{/informationForm}" th:Object="${memberVO}" enctype="multipart/form-data" autocomplete="off">
+                    <section class="form-input">
+                        <label>姓名</label>
+                        <div class="input-area">
+                    		<div class="input-img"><img th:src="@{/images/face.png}"></div>
+                            <input type="text" th:field="*{name}" disabled/>
+                        </div>
+                    </section>
+                    <section class="form-input">
+                        <label>帳號/Email</label>
+                        <div class="input-area">
+                    		<div class="input-img"><img th:src="@{/images/person.png}"></div>
+                            <input type="text" th:field="*{username}" disabled/>
+                        </div>
+                    </section>
+                    <section class="form-input">
+                        <label>身分證字號</label>
+                        <div class="input-area">
+                            <input type="text" th:field="*{id_number}" size="10" placeholder="請輸入您的身分證字號"/>
+                        </div>
+                    </section>
+                    <section class="form-select">
+                        <label>生日</label>
+                        <div class="select-area">
+                            <select th:field="*{year}">
+                                <option value="">年</option>
+                            </select>
+                            <select th:field="*{month}">
+                                <option value="">月</option>
+                            </select>
+                            <select th:field="*{date}">
+                                <option value="">日</option>
+                            </select>
+                        </div>
+                    </section>
+                    <section class="form-input">
+                        <label>聯絡電話</label>
+                        <div class="input-area">
+                            <input type="text" th:field="*{phone}" placeholder="請輸入您的聯絡電話"/>
+                        </div>
+                    </section>
+                    <section class="form-select">
+                        <label>地址</label>
+                        <div class="select-area address-select">
+                            <select th:field="*{c_id}">
+                                <option value="">請選擇縣市</option>
+                            </select>
+                            <select th:field="*{d_id}">
+                                <option value="">請選擇行政區</option>
+                            </select>
+                        </div>
+                        <div class="input-area">
+                            <input type="text" th:field="*{address}" placeholder="請輸入您的聯絡電話"/>
+                        </div>
+                    </section>
+                    <button>儲存</button>
+                </form>
+            </main>        
+        </div>
+    </section>
+    
+    <section th:replace="load/footer :: footer"></section>
+    <script th:src="@{/js/information.js}"></script>
+</body>
+</html>

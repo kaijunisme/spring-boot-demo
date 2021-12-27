@@ -1,0 +1,21 @@
+@charset "UTF-8";
+
+body {
+    background-color: #EEE;
+}
+
+section.main-content {
+    width: 100%;
+    height: calc(100% - 64px - 128px);
+    min-height: calc(100vh - 64px - 128px);
+}
+
+section.main-content .content {
+    width: 100%;
+    max-width: 1200px;
+    height: 100%;
+
+    margin: 0 auto;
+    padding: 0 16px;
+    box-sizing: border-box;
+}

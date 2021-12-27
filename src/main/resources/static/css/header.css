@@ -1,0 +1,49 @@
+@charset "UTF-8";
+
+header {
+    width: 100%;
+    height: 64px;
+    background-color: #001A48;
+}
+
+header .header {
+    width: 100%;
+    max-width: 1200px;
+    height: 100%;
+
+    margin: 0 auto;
+    padding: 0 16px;
+    box-sizing: border-box;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header a {
+    color: #FFF;
+    text-decoration: none;
+}
+
+header .logo {
+    color: #FFF;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+header nav ul {
+    display: flex;
+    align-items: center;
+}
+
+header nav ul li a {
+    display: block;
+    height: 64px;
+    line-height: 64px;
+    padding: 0 16px;
+}
+
+header nav ul li a:hover {
+    background-color: #FFF;
+    color: #000;
+}

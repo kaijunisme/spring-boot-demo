@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>會員登入</title>
+    <head th:insert="load/css :: css"></head>
+    <head th:insert="load/js :: js"></head>
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+</head>
+<body>
+    <main>
+        <h1>會員登入</h1>
+        <form id=loginForm method="POST" th:action="@{/login}" th:Object="${memberAccount}" enctype="multipart/form-data" autocomplete="off">
+            <section class="form-input">
+                <label>帳號/Email</label>
+                <div class="input-area">
+                    <div class="input-img"><img th:src="@{/images/person.png}"></div>
+                    <input type="text" th:field="*{username}" placeholder="請輸入您的Email"/>
+                </div>
+            </section>
+            <section class="form-input">
+                <label>密碼</label>
+                <div class="input-area">
+                    <div class="input-img"><img th:src="@{/images/lock.png}"></div>
+                    <input type="password" th:field="*{password}" maxlength="16" placeholder="請輸入您的密碼"/>
+                </div>
+            </section>
+            <button>登入</button>
+            <span>還不是會員嗎?<a th:href="@{/register}">立即加入</a></span>
+        </form>
+    </main>
+
+    <script th:src="@{/js/login.js}"></script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+@charset "UTF-8";
+
+footer {
+    width: 100%;
+    height: 128px;
+    background-color: #001A48;
+}
+
+footer .footer {
+    width: 100%;
+    max-width: 1200px;
+    height: 100%;
+
+    margin: 0 auto;
+    padding: 0 16px;
+    box-sizing: border-box;
+    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+footer .about-me {
+    color: #FFF;
+    font-size: 14px;
+}
+
+footer .about-me p {
+    margin: 8px 0;
+}
