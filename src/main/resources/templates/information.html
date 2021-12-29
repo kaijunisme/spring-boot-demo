@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>會員資料</title>
     <head th:insert="load/css :: css"></head>
-    <head th:insert="load/js :: js"></head>
     <link rel="stylesheet" th:href="@{/css/information.css}">
 </head>
 <body>
@@ -77,6 +76,7 @@
     </section>
     
     <section th:replace="load/footer :: footer"></section>
+    <script th:replace="load/js :: js"></script>
     <script th:src="@{/js/information.js}"></script>
 </body>
 </html>

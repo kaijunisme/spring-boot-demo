@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>加入會員</title>
     <head th:insert="load/css :: css"></head>
-    <head th:insert="load/js :: js"></head>
     <link rel="stylesheet" th:href="@{/css/register.css}">
 </head>
 <body>
@@ -45,6 +44,7 @@
         </form>
     </main>
     
+    <script th:replace="load/js :: js"></script>
     <script th:src="@{/js/register.js}"></script>
 </body>
 </html>

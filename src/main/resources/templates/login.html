@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>會員登入</title>
     <head th:insert="load/css :: css"></head>
-    <head th:insert="load/js :: js"></head>
     <link rel="stylesheet" th:href="@{/css/login.css}">
 </head>
 <body>
     <main>
         <h1>會員登入</h1>
         <form id=loginForm method="POST" th:action="@{/login}" th:Object="${memberAccount}" enctype="multipart/form-data" autocomplete="off">
+        	<input type="hidden" id="MESSAGE" th:value="${MESSAGE}"/>
             <section class="form-input">
                 <label>帳號/Email</label>
                 <div class="input-area">
@@ -31,6 +31,7 @@
         </form>
     </main>
 
+    <script th:replace="load/js :: js"></script>
     <script th:src="@{/js/login.js}"></script>
 </body>
 </html>
