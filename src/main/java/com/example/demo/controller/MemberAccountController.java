@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,14 +32,13 @@ public class MemberAccountController {
 	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String doLogin(
-			@ModelAttribute MemberAccount memberAccount,
+			@Valid @ModelAttribute MemberAccount memberAccount,
 			HttpSession session, 
 			RedirectAttributes redirectAttributes) {
 		
 		MemberAccountVO memberAccountVO = memberAccountService.login(memberAccount);
 		if(memberAccountVO == null) {
-			String message = memberAccountVO == null ? "帳號或密碼錯誤" : "";	
-			redirectAttributes.addFlashAttribute("MESSAGE", message);
+			redirectAttributes.addFlashAttribute("MESSAGE", "帳號或密碼錯誤");
 			return "redirect:login";
 		}
 		session.setAttribute("member", memberAccountVO);	
@@ -53,7 +53,7 @@ public class MemberAccountController {
 	
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String doRegister(
-			@ModelAttribute MemberAccountVO memberAccountVO,
+			@Valid @ModelAttribute MemberAccountVO memberAccountVO,
 			RedirectAttributes redirectAttributes) {
 
 		Optional<String> optional = memberAccountService.register(memberAccountVO);

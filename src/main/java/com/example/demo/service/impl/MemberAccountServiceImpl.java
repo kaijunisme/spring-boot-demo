@@ -12,7 +12,6 @@ import com.example.demo.entity.Member;
 import com.example.demo.entity.MemberAccount;
 import com.example.demo.service.MemberAccountService;
 import com.example.demo.service.MemberService;
-import com.example.demo.utils.ValidFormat;
 import com.example.demo.vo.MemberAccountVO;
 
 @Service
@@ -61,8 +60,6 @@ public class MemberAccountServiceImpl implements MemberAccountService {
 	public Optional<String> register(MemberAccountVO memberAccountVO) {
 		// TODO Auto-generated method stub
 		// 驗證欄位是否填寫及格式
-		if(!ValidFormat.isEmail(memberAccountVO.getUsername())) return Optional.of("帳號必須是Email 格式");
-		if(!ValidFormat.isPassword(memberAccountVO.getPassword())) return Optional.of("密碼必須為長度6~16位碼大小寫英文加數字");
 		if(!memberAccountVO.getPassword().equals(memberAccountVO.getCheckPassword())) return Optional.of("兩次輸入密碼不相符");
 		
 		// 檢查帳號是否重複註冊

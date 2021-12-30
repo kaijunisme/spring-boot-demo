@@ -1,10 +1,9 @@
 package com.example.demo.service;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.util.Optional;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,38 +27,19 @@ public class MemberAccountServiceTest {
 	@MockBean
 	private MemberAccountDao memberAccountDao;
 	
-	// Description: 測試註冊 - 帳號格式錯誤
-	@Test
-	public void register_username_format_error() {
-		// 準備測試資料
-		MemberAccountVO memberAccountVO = new MemberAccountVO();
-		memberAccountVO.setUsername("not email");
-		
-		// 進行測試
-		Optional<String> result = memberAccountService.register(memberAccountVO);
-		assertEquals("帳號必須是Email 格式", result.orElse(""));
-	}
-
-	// Description: 測試註冊 - 密碼格式錯誤
-	@Test
-	public void register_password_format_error() {
-		// 準備測試資料
-		MemberAccountVO memberAccountVO = new MemberAccountVO();
+	private MemberAccountVO memberAccountVO;
+	
+	@BeforeEach
+	public void setup() {
+		memberAccountVO = new MemberAccountVO();
 		memberAccountVO.setUsername("email@email.com");
-		memberAccountVO.setPassword("password");
-		
-		// 進行測試
-		Optional<String> result = memberAccountService.register(memberAccountVO);
-		Assertions.assertEquals("密碼必須為長度6~16位碼大小寫英文加數字", result.orElse(""));
+		memberAccountVO.setPassword("Password1234");
+		memberAccountVO.setCheckPassword("Password1234");
 	}
-
+	
 	// Description: 測試註冊 - 兩次輸入密碼不相符
 	@Test
 	public void register_password_not_match_with_checkPassword() {
-		// 準備測試資料
-		MemberAccountVO memberAccountVO = new MemberAccountVO();
-		memberAccountVO.setUsername("email@email.com");
-		memberAccountVO.setPassword("Password1234");
 		memberAccountVO.setCheckPassword("password1234");
 		
 		// 進行測試
@@ -70,12 +50,6 @@ public class MemberAccountServiceTest {
 	// Description: 測試註冊 - 重複帳號
 	@Test
 	public void register_duplicate_username() {
-		// 準備測試資料
-		MemberAccountVO memberAccountVO = new MemberAccountVO();
-		memberAccountVO.setUsername("email@email.com");
-		memberAccountVO.setPassword("Password1234");
-		memberAccountVO.setCheckPassword("Password1234");
-
 		// 設定memberAccountDao.findMemberAccountByUsername() 方法回傳假資料
 		MemberAccount memberAccount = new MemberAccount();
 		memberAccount.setUsername("email@email.com");
@@ -89,12 +63,6 @@ public class MemberAccountServiceTest {
 	// Description: 測試註冊 - 新增MemberAccount 資料時錯誤
 	@Test
 	public void register_MemberAccount_insert_error() {
-		// 準備測試資料
-		MemberAccountVO memberAccountVO = new MemberAccountVO();
-		memberAccountVO.setUsername("email@email.com");
-		memberAccountVO.setPassword("Password1234");
-		memberAccountVO.setCheckPassword("Password1234");
-
 		// 設定memberAccountDao.findMemberAccountByUsername() 方法回傳假資料
 		Mockito.when(memberAccountDao.findMemberAccountByUsername("email@email.com")).thenReturn(null);
 
@@ -109,12 +77,6 @@ public class MemberAccountServiceTest {
 	// Description: 測試註冊 - 新增Member 資料時錯誤
 	@Test
 	public void register_Member_insert_error() {
-		// 準備測試資料
-		MemberAccountVO memberAccountVO = new MemberAccountVO();
-		memberAccountVO.setUsername("email@email.com");
-		memberAccountVO.setPassword("Password1234");
-		memberAccountVO.setCheckPassword("Password1234");
-
 		// 設定memberAccountDao.findMemberAccountByUsername() 方法回傳假資料
 		Mockito.when(memberAccountDao.findMemberAccountByUsername("email@email.com")).thenReturn(null);
 
@@ -132,12 +94,6 @@ public class MemberAccountServiceTest {
 	// Description: 測試註冊 - 成功
 	@Test
 	public void register_success() {
-		// 準備測試資料
-		MemberAccountVO memberAccountVO = new MemberAccountVO();
-		memberAccountVO.setUsername("email@email.com");
-		memberAccountVO.setPassword("Password1234");
-		memberAccountVO.setCheckPassword("Password1234");
-
 		// 設定memberAccountDao.findMemberAccountByUsername() 方法回傳假資料
 		Mockito.when(memberAccountDao.findMemberAccountByUsername("email@email.com")).thenReturn(null);
 
@@ -149,7 +105,7 @@ public class MemberAccountServiceTest {
 
 		// 進行測試
 		Optional<String> result = memberAccountService.register(memberAccountVO);
-		Assertions.assertEquals(null, result.orElse(null));
+		Assertions.assertNull(result.orElse(null));
 	}
 
 	// Description: 測試登入 - 帳號不存在
@@ -165,7 +121,7 @@ public class MemberAccountServiceTest {
 		
 		// 進行測試
 		MemberAccountVO result = memberAccountService.login(memberAccount);
-		Assertions.assertEquals(null, result);
+		Assertions.assertNull(result);
 	}
 
 	// Description: 測試登入 - 密碼比對錯誤
@@ -184,7 +140,7 @@ public class MemberAccountServiceTest {
 		
 		// 進行測試
 		MemberAccountVO result = memberAccountService.login(memberAccount);
-		Assertions.assertEquals(null, result);		
+		Assertions.assertNull(result);
 	}
 
 	// Description: 測試登入 - 查無對應Member 資料
@@ -207,7 +163,7 @@ public class MemberAccountServiceTest {
 
 		// 進行測試
 		MemberAccountVO result = memberAccountService.login(memberAccount);
-		Assertions.assertEquals(null, result);		
+		Assertions.assertNull(result);
 	}
 	
 }
