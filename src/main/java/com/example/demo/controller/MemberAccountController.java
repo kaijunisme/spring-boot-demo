@@ -3,6 +3,8 @@ package com.example.demo.controller;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -20,6 +22,8 @@ public class MemberAccountController {
 	@Autowired
 	private MemberAccountService memberAccountService;
 	
+	private static final Logger logger = LoggerFactory.getLogger(MemberAccountController.class);
+	
 	@RequestMapping(value = {"/", "/login"}, method = RequestMethod.GET)
 	public String login(
 			@ModelAttribute MemberAccount memberAccount,
@@ -35,7 +39,8 @@ public class MemberAccountController {
 			RedirectAttributes redirectAttributes) {
 		
 		MemberAccountVO memberAccountVO = memberAccountService.login(memberAccount);
-		session.setAttribute("member", memberAccountVO);	
+		session.setAttribute("member", memberAccountVO);
+		logger.info(memberAccountVO.getName() + " 登入成功");
 		return "redirect:information";
 	}
 	
@@ -52,6 +57,7 @@ public class MemberAccountController {
 
 		memberAccountService.register(memberAccountVO);
 		redirectAttributes.addFlashAttribute("MESSAGE", "註冊成功");
+		logger.info(memberAccountVO.getName() + " 註冊成功");
 		return "redirect:login";
 	}
 	
