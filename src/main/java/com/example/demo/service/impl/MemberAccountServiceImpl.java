@@ -1,6 +1,5 @@
 package com.example.demo.service.impl;
 
-import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +11,11 @@ import com.example.demo.entity.Member;
 import com.example.demo.entity.MemberAccount;
 import com.example.demo.service.MemberAccountService;
 import com.example.demo.service.MemberService;
+import com.example.demo.service.ex.InsertException;
+import com.example.demo.service.ex.MemberAccountNotFoundException;
+import com.example.demo.service.ex.MemberNotFoundException;
+import com.example.demo.service.ex.PasswordNotMatchException;
+import com.example.demo.service.ex.UsernameDuplicateException;
 import com.example.demo.vo.MemberAccountVO;
 
 @Service
@@ -37,17 +41,17 @@ public class MemberAccountServiceImpl implements MemberAccountService {
 		// TODO Auto-generated method stub
 		// 檢查帳號是否存在
 		MemberAccount data = memberAccountDao.findMemberAccountByUsername(memberAccount.getUsername());
-		if(data == null) return null;
+		if(data == null) throw new MemberAccountNotFoundException("帳號或密碼錯誤");
 
 		// 使用資料庫鹽值對輸入密碼進行加密
 		String md5Password = getMd5Password(memberAccount.getPassword(), data.getSalt());
 
 		// 比對密碼是否相等
-		if(!md5Password.equals(data.getPassword())) return null;
+		if(!md5Password.equals(data.getPassword())) throw new PasswordNotMatchException("帳號或密碼錯誤");
 		
 		// 取得對應Member 資料
 		Member member = memberService.findMemberByMa_id(data.getId());
-		if(member == null) return null;
+		if(member == null) throw new MemberNotFoundException("帳號或密碼錯誤");
 		
 		// 組合資料為MemberAccountVO
 		MemberAccountVO memberAccountVO = new MemberAccountVO();
@@ -57,14 +61,14 @@ public class MemberAccountServiceImpl implements MemberAccountService {
 	}
 
 	@Override
-	public Optional<String> register(MemberAccountVO memberAccountVO) {
+	public void register(MemberAccountVO memberAccountVO) {
 		// TODO Auto-generated method stub
 		// 驗證欄位是否填寫及格式
-		if(!memberAccountVO.getPassword().equals(memberAccountVO.getCheckPassword())) return Optional.of("兩次輸入密碼不相符");
+		if(!memberAccountVO.getPassword().equals(memberAccountVO.getCheckPassword())) throw new PasswordNotMatchException("兩次輸入密碼不相符");
 		
 		// 檢查帳號是否重複註冊
 		MemberAccount data = memberAccountDao.findMemberAccountByUsername(memberAccountVO.getUsername());
-		if(data != null) return Optional.of("該帳號已被使用");
+		if(data != null) throw new UsernameDuplicateException("該帳號已被使用");
 		
 		// 產生鹽值
 		String salt = UUID.randomUUID().toString().toUpperCase().replaceAll("-", "");
@@ -80,7 +84,7 @@ public class MemberAccountServiceImpl implements MemberAccountService {
 		memberAccount.setCreate_by(memberAccountVO.getUsername());
 		memberAccount.setUpdate_by(memberAccountVO.getUsername());
 		Integer id = memberAccountDao.insert(memberAccount);
-		if(id == 0) return Optional.of("新增會員帳號時發生錯誤");
+		if(id == 0) throw new InsertException("新增會員帳號時發生錯誤");
 
 		// 新增Member 資料
 		Member member = new Member();
@@ -89,9 +93,7 @@ public class MemberAccountServiceImpl implements MemberAccountService {
 		member.setCreate_by(memberAccountVO.getUsername());
 		member.setUpdate_by(memberAccountVO.getUsername());
 		Integer result = memberService.insert(member);
-		if(result == 0) return Optional.of("新增會員資料時發生錯誤");
-		
-		return Optional.empty();
+		if(result == 0) throw new InsertException("新增會員資料時發生錯誤");
 	}
 
 	@Override

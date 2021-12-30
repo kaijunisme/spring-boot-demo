@@ -1,7 +1,5 @@
 package com.example.demo.service;
 
-import java.util.Optional;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,11 +11,16 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import com.example.demo.dao.MemberAccountDao;
 import com.example.demo.entity.Member;
 import com.example.demo.entity.MemberAccount;
+import com.example.demo.service.ex.InsertException;
+import com.example.demo.service.ex.MemberAccountNotFoundException;
+import com.example.demo.service.ex.MemberNotFoundException;
+import com.example.demo.service.ex.PasswordNotMatchException;
+import com.example.demo.service.ex.UsernameDuplicateException;
 import com.example.demo.vo.MemberAccountVO;
 
 @SpringBootTest
 public class MemberAccountServiceTest {
-
+	
 	@Autowired
 	private MemberAccountService memberAccountService;
 
@@ -43,8 +46,9 @@ public class MemberAccountServiceTest {
 		memberAccountVO.setCheckPassword("password1234");
 		
 		// 進行測試
-		Optional<String> result = memberAccountService.register(memberAccountVO);
-		Assertions.assertEquals("兩次輸入密碼不相符", result.orElse(""));
+		Assertions.assertThrows(
+				PasswordNotMatchException.class, 
+				() -> memberAccountService.register(memberAccountVO));
 	}
 
 	// Description: 測試註冊 - 重複帳號
@@ -56,8 +60,9 @@ public class MemberAccountServiceTest {
 		Mockito.when(memberAccountDao.findMemberAccountByUsername("email@email.com")).thenReturn(memberAccount);
 
 		// 進行測試
-		Optional<String> result = memberAccountService.register(memberAccountVO);
-		Assertions.assertEquals("該帳號已被使用", result.orElse(""));		
+		Assertions.assertThrows(
+				UsernameDuplicateException.class, 
+				() -> memberAccountService.register(memberAccountVO));
 	}
 
 	// Description: 測試註冊 - 新增MemberAccount 資料時錯誤
@@ -70,8 +75,9 @@ public class MemberAccountServiceTest {
 		Mockito.when(memberAccountDao.insert(Mockito.any(MemberAccount.class))).thenReturn(0);
 
 		// 進行測試
-		Optional<String> result = memberAccountService.register(memberAccountVO);
-		Assertions.assertEquals("新增會員帳號時發生錯誤", result.orElse(""));		
+		Assertions.assertThrows(
+				InsertException.class, 
+				() -> memberAccountService.register(memberAccountVO));
 	}
 
 	// Description: 測試註冊 - 新增Member 資料時錯誤
@@ -87,8 +93,9 @@ public class MemberAccountServiceTest {
 		Mockito.when(memberService.insert(Mockito.any(Member.class))).thenReturn(0);
 
 		// 進行測試
-		Optional<String> result = memberAccountService.register(memberAccountVO);
-		Assertions.assertEquals("新增會員資料時發生錯誤", result.orElse(""));
+		Assertions.assertThrows(
+				InsertException.class, 
+				() -> memberAccountService.register(memberAccountVO));
 	}
 
 	// Description: 測試註冊 - 成功
@@ -104,8 +111,7 @@ public class MemberAccountServiceTest {
 		Mockito.when(memberService.insert(Mockito.any(Member.class))).thenReturn(1);
 
 		// 進行測試
-		Optional<String> result = memberAccountService.register(memberAccountVO);
-		Assertions.assertNull(result.orElse(null));
+		Assertions.assertDoesNotThrow(() -> memberAccountService.register(memberAccountVO));
 	}
 
 	// Description: 測試登入 - 帳號不存在
@@ -120,8 +126,9 @@ public class MemberAccountServiceTest {
 		Mockito.when(memberAccountDao.findMemberAccountByUsername("email@email.com")).thenReturn(null);
 		
 		// 進行測試
-		MemberAccountVO result = memberAccountService.login(memberAccount);
-		Assertions.assertNull(result);
+		Assertions.assertThrows(
+				MemberAccountNotFoundException.class, 
+				() -> memberAccountService.login(memberAccount));
 	}
 
 	// Description: 測試登入 - 密碼比對錯誤
@@ -139,8 +146,9 @@ public class MemberAccountServiceTest {
 		Mockito.when(memberAccountDao.findMemberAccountByUsername("email@email.com")).thenReturn(fake);
 		
 		// 進行測試
-		MemberAccountVO result = memberAccountService.login(memberAccount);
-		Assertions.assertNull(result);
+		Assertions.assertThrows(
+				PasswordNotMatchException.class, 
+				() -> memberAccountService.login(memberAccount));
 	}
 
 	// Description: 測試登入 - 查無對應Member 資料
@@ -162,8 +170,9 @@ public class MemberAccountServiceTest {
 		Mockito.when(memberService.findMemberByMa_id("1")).thenReturn(null);
 
 		// 進行測試
-		MemberAccountVO result = memberAccountService.login(memberAccount);
-		Assertions.assertNull(result);
+		Assertions.assertThrows(
+				MemberNotFoundException.class, 
+				() -> memberAccountService.login(memberAccount));
 	}
 	
 }
