@@ -14,7 +14,7 @@
         <div class="content">
             <main>
                 <h1>會員資料</h1>
-        		<form id="informationForm" method="POST" th:action="@{/informationForm}" th:Object="${memberVO}" enctype="multipart/form-data" autocomplete="off">
+        		<form id="informationForm" method="POST" th:action="@{/information}" th:Object="${member}" enctype="multipart/form-data" autocomplete="off">
                     <section class="form-input">
                         <label>姓名</label>
                         <div class="input-area">
@@ -26,7 +26,7 @@
                         <label>帳號/Email</label>
                         <div class="input-area">
                     		<div class="input-img"><img th:src="@{/images/person.png}"></div>
-                            <input type="text" th:field="*{username}" disabled/>
+                            <input type="text" th:value="${session.member.username}" disabled/>
                         </div>
                     </section>
                     <section class="form-input">
@@ -38,13 +38,14 @@
                     <section class="form-select">
                         <label>生日</label>
                         <div class="select-area">
-                            <select th:field="*{year}">
+                        	<input type="hidden" th:field="*{birthday}"/>
+                            <select id="year" name="year">
                                 <option value="">年</option>
                             </select>
-                            <select th:field="*{month}">
+                            <select id="month" name="month">
                                 <option value="">月</option>
                             </select>
-                            <select th:field="*{date}">
+                            <select id="date" name="date">
                                 <option value="">日</option>
                             </select>
                         </div>
@@ -58,10 +59,12 @@
                     <section class="form-select">
                         <label>地址</label>
                         <div class="select-area address-select">
-                            <select th:field="*{c_id}">
+                        	<input type="hidden" id="c_id" th:value="*{c_id}"/>
+                            <select name="c_id">
                                 <option value="">請選擇縣市</option>
                             </select>
-                            <select th:field="*{d_id}">
+                        	<input type="hidden" id="d_id" th:value="*{d_id}"/>
+                            <select name="d_id">
                                 <option value="">請選擇行政區</option>
                             </select>
                         </div>

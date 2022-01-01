@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.entity.MemberAccount;
@@ -38,9 +39,9 @@ public class MemberAccountController {
 			HttpSession session, 
 			RedirectAttributes redirectAttributes) {
 		
-		MemberAccountVO memberAccountVO = memberAccountService.login(memberAccount);
-		session.setAttribute("member", memberAccountVO);
-		logger.info(memberAccountVO.getName() + " 登入成功");
+		memberAccount = memberAccountService.login(memberAccount);
+		session.setAttribute("member", memberAccount);
+		logger.info(memberAccount.getUsername() + " 登入成功");
 		return "redirect:information";
 	}
 	
@@ -58,6 +59,18 @@ public class MemberAccountController {
 		memberAccountService.register(memberAccountVO);
 		redirectAttributes.addFlashAttribute("MESSAGE", "註冊成功");
 		logger.info(memberAccountVO.getName() + " 註冊成功");
+		return "redirect:login";
+	}
+	
+	@RequestMapping(value = "/logout")
+	public String logout(
+			HttpSession session, 
+			SessionStatus sessionStatus) {
+
+		if(session.getAttribute("member") != null){
+			session.removeAttribute("member");
+			sessionStatus.setComplete();
+		}		
 		return "redirect:login";
 	}
 	

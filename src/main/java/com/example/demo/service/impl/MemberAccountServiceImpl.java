@@ -37,7 +37,7 @@ public class MemberAccountServiceImpl implements MemberAccountService {
 	}
 	
 	@Override
-	public MemberAccountVO login(MemberAccount memberAccount) {
+	public MemberAccount login(MemberAccount memberAccount) {
 		// TODO Auto-generated method stub
 		// 檢查帳號是否存在
 		MemberAccount data = memberAccountDao.findMemberAccountByUsername(memberAccount.getUsername());
@@ -53,11 +53,10 @@ public class MemberAccountServiceImpl implements MemberAccountService {
 		Member member = memberService.findMemberByMa_id(data.getId());
 		if(member == null) throw new MemberNotFoundException("帳號或密碼錯誤");
 		
-		// 組合資料為MemberAccountVO
-		MemberAccountVO memberAccountVO = new MemberAccountVO();
-		memberAccountVO.setUsername(memberAccount.getUsername());
-		memberAccountVO.setName(member.getName());
-		return memberAccountVO;
+		// 將密碼設為null 後回傳
+		data.setPassword(null);
+		data.setSalt(null);
+		return data;
 	}
 
 	@Override
