@@ -1,7 +1,5 @@
 package com.example.demo.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -13,8 +11,6 @@ import com.example.demo.service.ex.ServiceException;
 @ControllerAdvice
 public class ExceptionHandlerController {
 
-	private static final Logger logger = LoggerFactory.getLogger(ExceptionHandlerController.class);
-	
 	@ExceptionHandler({BindException.class})
 	public String handleBindException(
 			Throwable e, 
@@ -31,7 +27,6 @@ public class ExceptionHandlerController {
 		// 取得第一個例外訊息
 		String message = results.getFieldErrors().get(0).getDefaultMessage();
 		redirectAttributes.addFlashAttribute("MESSAGE", message);
-		logger.warn(message);
 		return "redirect:login";
 	}
 	
@@ -41,7 +36,6 @@ public class ExceptionHandlerController {
 			RedirectAttributes redirectAttributes) {
 
 		redirectAttributes.addFlashAttribute("MESSAGE", e.getMessage());
-		logger.warn(e.getMessage());
 		return "redirect:login";
 	}
 	
